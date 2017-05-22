@@ -6,18 +6,15 @@
  *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: February 2017
- *------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Description:
- * ----------   --- ------------------------------------------------------------
- * -            -   -
  *==============================================================================
  */
-package lexa.core.data.transform;
+package lexa.core.transform;
 
 import java.util.HashSet;
 import java.util.Set;
-import lexa.core.data.ArrayDataSet;
+import lexa.core.data.ArrayFactory;
+import lexa.core.data.DataFactory;
+import lexa.core.data.DataFactoryItem;
 import lexa.core.data.DataItem;
 import lexa.core.data.DataSet;
 
@@ -26,6 +23,7 @@ import lexa.core.data.DataSet;
  * @author william
  */
 public class Transform
+        implements DataFactoryItem
 {
 
     protected final Set<Transform> children;
@@ -41,6 +39,16 @@ public class Transform
         this.results=data;
         this.children =new HashSet();
         this.validatedItems=0;
+    }
+
+    @Override
+    public DataFactory factory()
+    {
+        if (this.results == null)
+        {
+            return ArrayFactory.factory;
+        }
+        return this.results.factory();
     }
 
     public DataSet getDataSet()
@@ -89,7 +97,7 @@ public class Transform
     {
         return new Group(this,
                 grouping != null ? grouping :
-                        new ArrayDataSet());
+                        this.factory().getDataSet());
     }
     public Transform sort(String field, boolean ascending)
     {

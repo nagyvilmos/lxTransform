@@ -13,11 +13,13 @@
  * -            -   -
  *==============================================================================
  */
-package lexa.core.data.transform;
+package lexa.core.transform;
 
-import lexa.core.data.ArrayDataSet;
+import lexa.core.data.ArrayFactory;
+import lexa.core.data.DataFactory;
 import lexa.core.data.DataItem;
 import lexa.core.data.DataSet;
+import lexa.core.data.DataValue;
 
 /**
  *
@@ -65,11 +67,16 @@ class Sort
     }
 
     @Override
+    public DataFactory factory()
+    {
+        return ArrayFactory.factory;
+    }
+    @Override
     public DataSet getDataSet()
     {
         if (this.results == null)
         {
-            this.results = new ArrayDataSet();
+            this.results = this.factory().getDataSet();
             for (int i = 0; i < this.size(); i++)
             {
                 this.results.put(this.item(i));
@@ -130,10 +137,13 @@ class Sort
     {
         for (int f=0; f < this.fields.length; f++)
         {
-            int compare =
-                    this.previous.item(this.sorted[from]).getDataSet().item(this.fields[f])
-                            .compareTo(
-                    this.previous.item(this.sorted[to]).getDataSet().item(this.fields[f]));
+            DataValue fromValue = this.previous.item(this.sorted[from]).getDataSet().item(this.fields[f]);
+            DataValue toValue   = this.previous.item(this.sorted[to]  ).getDataSet().item(this.fields[f]);
+
+            int compare = fromValue == null ?
+                    toValue == null ? 0 : 1 :
+                    toValue == null ? -1 :
+                    fromValue.compareTo(toValue);
 
             if (compare !=0)
             {

@@ -5,33 +5,22 @@
  * GroupTest.java
  *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
- * Created: Month YEAR
- *------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Description:
- * ----------   --- ------------------------------------------------------------
- * -            -   -
+ * Created: may 2017
  *==============================================================================
  */
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package lxtransform;
 
 import java.io.IOException;
 import lexa.core.data.ArrayDataArray;
 import lexa.core.data.ArrayDataSet;
-import lexa.core.data.transform.Transform;
+import lexa.core.transform.Transform;
 import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
 
 /**
- *
+ * Test grouping functions
  * @author william
+ * @since 2017-05
  */
 @TestAnnotation(
         arguments = "dataSetTypes",
@@ -53,6 +42,7 @@ public class GroupTest
         );
     }
 
+    @TestAnnotation()
     public TestResult keyGender(Object arg) throws IOException
     {
         Transform transform = new Transform(this.data).group(
@@ -84,7 +74,7 @@ public class GroupTest
                                 .put("count", "optional"))));
         return TestResult.all(
                 TestResult.result(1, transform.getDataSet().size()),
-                TestResult.result(35,
+                TestResult.result(28,
                     transform
                             .item(0).getDataSet()
                             .getInteger("count"))
@@ -100,7 +90,7 @@ public class GroupTest
                                 .put("total ages", "age"))));
         return TestResult.all(
                 TestResult.result(1, transform.getDataSet().size()),
-                TestResult.result(4000,
+                TestResult.result(3402,
                     transform
                             .item(0).getDataSet()
                             .getInteger("total ages"))
@@ -117,7 +107,7 @@ public class GroupTest
                                 .put("total rating", "rating"))));
         return TestResult.all(
                 TestResult.result(1, transform.getDataSet().size()),
-                TestResult.result(12.5,
+                TestResult.result(48.39814567632112,
                     transform
                             .item(0).getDataSet()
                             .getDouble("total rating"))

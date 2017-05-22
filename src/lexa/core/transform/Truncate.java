@@ -20,7 +20,7 @@
  * and open the template in the editor.
  */
 
-package lexa.core.data.transform;
+package lexa.core.transform;
 
 import lexa.core.data.DataItem;
 

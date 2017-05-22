@@ -13,10 +13,10 @@
  * -            -   -
  *==============================================================================
  */
-package lexa.core.data.transform;
+package lexa.core.transform;
 
 import lexa.core.data.DataSet;
-import lexa.core.data.ArrayDataSet;
+import lexa.core.data.DataFactory;
 
 /**
  * A step in a data set transformation
@@ -31,6 +31,16 @@ public abstract class TransformStep
     protected final Transform previous;
 
     @Override
+    public DataFactory factory()
+    {
+        if (this.results == null)
+        {
+            return this.previous.factory();
+        }
+        return this.results.factory();
+    }
+
+    @Override
     public DataSet getDataSet()
     {
         if (this.size() == this.previous.size())
@@ -40,7 +50,7 @@ public abstract class TransformStep
         }
         if (this.results == null)
         {
-            this.results = new ArrayDataSet();
+            this.results = this.factory().getDataSet();
             for (int i = 0; i < this.size(); i++)
             {
                 this.results.put(this.item(i));

@@ -10,7 +10,7 @@
 package lxtransform;
 
 import java.io.IOException;
-import lexa.core.data.transform.Transform;
+import lexa.core.transform.Transform;
 import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
 
@@ -29,6 +29,18 @@ public class SortTest
     public TestResult sort(Object arg) throws IOException
     {
         Transform transform = new Transform(this.data).sort("rating", true);
+        return TestResult.result(CommonTest.DATA_SIZE,
+                transform.getDataSet().size());
+    }
+
+    @TestAnnotation()
+    public TestResult sortOptional(Object arg) throws IOException
+    {
+        String[] fields = {"optional", "rating"};
+        boolean[] ascending = {true, true};
+         Transform transform =
+                new Transform(this.data)
+                .sort(fields, ascending);
         return TestResult.result(CommonTest.DATA_SIZE,
                 transform.getDataSet().size());
     }

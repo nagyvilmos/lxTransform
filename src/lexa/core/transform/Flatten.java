@@ -20,9 +20,8 @@
  * and open the template in the editor.
  */
 
-package lexa.core.data.transform;
+package lexa.core.transform;
 
-import lexa.core.data.ArrayDataSet;
 import lexa.core.data.DataArray;
 import lexa.core.data.DataItem;
 import lexa.core.data.DataSet;
@@ -60,7 +59,7 @@ public class Flatten
     {
         if (this.results == null)
         {
-            this.results=new ArrayDataSet();
+            this.results=this.previous.getDataSet().factory().getDataSet();
         }
         while (this.validatedItems < item &&
                 this.nextRead < this.previous.size() )
@@ -81,12 +80,12 @@ public class Flatten
                     int flattened = 0;
                     for (DataValue value : flatten)
                     {
-                        flattened++;
                         String key = next.getKey() + '_' + flattened;
                         this.results.put(key,
-                                data.put(this.field, value)
+                                data.factory().clone(data)
+                                    .put(this.field, value)
                         );
-
+                        flattened++;
                     }
                     this.validatedItems+=flattened;
                 }

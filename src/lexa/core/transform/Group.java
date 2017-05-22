@@ -5,34 +5,21 @@
  * Group.java
  *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
- * Created: Month YEAR
- *------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Description:
- * ----------   --- ------------------------------------------------------------
- * -            -   -
+ * Created: may 2017
  *==============================================================================
  */
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package lexa.core.data.transform;
+package lexa.core.transform;
 
 import java.util.ArrayList;
 import java.util.List;
-import lexa.core.data.ArrayDataArray;
-import lexa.core.data.ArrayDataSet;
 import lexa.core.data.DataArray;
 import lexa.core.data.DataItem;
 import lexa.core.data.DataSet;
 
 /**
- *
+ * Grouping functions for a transform
  * @author william
+ * @since 2017-05
  */
 public class Group
         extends TransformStep
@@ -45,7 +32,7 @@ public class Group
 
     public Group(Transform parent)
     {
-        this(parent, new ArrayDataSet());
+        this(parent, parent.factory().getDataSet());
     }
 
     public Group(Transform parent, DataSet grouping)
@@ -59,15 +46,15 @@ public class Group
 
         this.group = this.keys == null ?
                 grouping.getArray("group") :
-                    new ArrayDataArray(this.keys)
+                    super.factory().getDataArray().addAll(this.keys)
                         .addAll(grouping.getArray("group"));
 
         this.groupings = Group.buildGroupings(
                 grouping.contains("grouping") ?
                     grouping.getDataSet("grouping") :
-                    new ArrayDataSet()
+                    super.factory().getDataSet()
                         .put("count",
-                            new ArrayDataSet()
+                            super.factory().getDataSet()
                                 .put("count",null)));
         this.nextRead=0;
     }
@@ -90,7 +77,7 @@ public class Group
             return this.validatedItems;
         }
         // one off we have to process the lot.
-        this.results=new ArrayDataSet();
+        this.results=super.factory().getDataSet();
         while (this.nextRead < this.previous.size() )
         {
             DataItem next = this.previous.item(this.nextRead);
@@ -124,7 +111,7 @@ public class Group
             // single summation
             if (!this.results.contains("all"))
             {
-                this.results.put("all", new ArrayDataSet());
+                this.results.put("all", super.factory().getDataSet());
                 this.validatedItems++; // actually it's one/
             }
             return this.results.getDataSet("all");
@@ -140,7 +127,7 @@ public class Group
             // single summation
             if (!this.results.contains(key))
             {
-                this.results.put(key, new ArrayDataSet());
+                this.results.put(key, super.factory().getDataSet());
                 this.validatedItems++; // actually it's one/
             }
             return this.results.getDataSet(key);
@@ -205,7 +192,7 @@ public class Group
 
             if (field == null )
             {
-                sums.add(new SumAll(key));
+                throw new IllegalArgumentException("Cannot sum without a field name");
             }
             else
             {
@@ -262,43 +249,73 @@ public class Group
         void group(DataSet total, DataSet item);
     }
 
-    private static class SumAll
+//    private static class SumAll
+//            implements Grouping
+//    {
+//        private final String key;
+//
+//        public SumAll(String key)
+//        {
+//            this.key = key;
+//        }
+//
+//        @Override
+//        public void group(DataSet total, DataSet item)
+//        {
+//            DataItem di = item.get(key);
+//            switch (di.getType())
+//
+//        }
+//    }
+
+    private static class Sum
             implements Grouping
     {
         private final String key;
-
-        public SumAll(String key)
-        {
-            this.key = key;
-        }
-
-        @Override
-        public void group(DataSet total, DataSet item)
-        {
-//            Object sum = total.contains(this.key) ?
-//                    total.getObject(this.key) + item.getObject(this.key) : item.getObject(this.key);
-            total.put(this.key, 1);
-        }
-    }
-
-    private static class Sum
-            extends SumAll
-    {
-
         private final String field;
 
         public Sum(String key, String field)
         {
-            super(key);
+            this.key = key;
             this.field = field;
         }
 
         @Override
         public void group(DataSet total, DataSet item)
         {
+
             if (item.contains(this.field))
             {
-                super.group(total,item);
+                DataItem addItem = item.get(this.field);
+                DataItem totalItem = total.get(this.key);
+                if (totalItem == null)
+                {
+                    total.put(this.key, addItem.getValue());
+                }
+                else
+                {
+                    switch (totalItem.getType())
+                    {
+                        case INTEGER :
+                        {
+                            total.put(this.key,
+                                    totalItem.getInteger() + addItem.getInteger());
+                            break;
+                        }
+                        case LONG :
+                        {
+                            total.put(this.key,
+                                    totalItem.getLong()+ addItem.getLong());
+                            break;
+                        }
+                        case DOUBLE :
+                        {
+                            total.put(this.key,
+                                    totalItem.getDouble()+ addItem.getDouble());
+                            break;
+                        }
+                    }
+                }
             }
         }
     }}

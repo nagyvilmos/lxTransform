@@ -20,12 +20,11 @@
  * and open the template in the editor.
  */
 
-package lexa.core.data.transform;
+package lexa.core.transform;
 
 import java.util.ArrayList;
 import java.util.List;
 import lexa.core.data.DataItem;
-import lexa.core.data.ArrayDataValue;
 import lexa.core.data.DataSet;
 import lexa.core.data.DataValue;
 
@@ -45,7 +44,7 @@ public class Contains
     {
         super(parent);
         this.key=key;
-        this.value= new ArrayDataValue(value);
+        this.value= super.factory().getDataValue(value);
         this.matches = new ArrayList();
     }
 

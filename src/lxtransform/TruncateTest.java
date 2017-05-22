@@ -11,7 +11,7 @@
 package lxtransform;
 
 import java.io.IOException;
-import lexa.core.data.transform.Transform;
+import lexa.core.transform.Transform;
 import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
 
