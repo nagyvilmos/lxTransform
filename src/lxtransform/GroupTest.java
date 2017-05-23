@@ -13,6 +13,7 @@ package lxtransform;
 import java.io.IOException;
 import lexa.core.data.ArrayDataArray;
 import lexa.core.data.ArrayDataSet;
+import lexa.core.data.DataSet;
 import lexa.core.transform.Transform;
 import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
@@ -43,19 +44,18 @@ public class GroupTest
     }
 
     @TestAnnotation()
-    public TestResult keyGender(Object arg) throws IOException
+    public TestResult countGender(Object arg) throws IOException
     {
         Transform transform = new Transform(this.data).group(
             new ArrayDataSet()
                 .put("key",
                     new ArrayDataArray()
                         .add("sex")));
+        DataSet ds = transform.getDataSet();
         return TestResult.all(
-                TestResult.result(2, transform.getDataSet().size()),
+                TestResult.result(2, ds.size()),
                 TestResult.result(50,
-                    transform
-                            .item(0).getDataSet()
-                            .getInteger("count")),
+                    ds.get(0).getDataSet().getInteger("count")),
                 TestResult.result(50,
                     transform
                             .item(1).getDataSet()
@@ -107,7 +107,7 @@ public class GroupTest
                                 .put("total rating", "rating"))));
         return TestResult.all(
                 TestResult.result(1, transform.getDataSet().size()),
-                TestResult.result(48.39814567632112,
+                TestResult.result(48.398145,48.398146,
                     transform
                             .item(0).getDataSet()
                             .getDouble("total rating"))

@@ -37,7 +37,7 @@ public class CommonTest
                     .put("forename", CommonTest.string(rnd, 2))
                     .put("age", rnd.nextInt(30) + 21)
                     .put("sex", rnd.nextBoolean() ? "m" : "f")
-                    .put("rating", rnd.nextInt(1000)/1000.0)
+                    .put("rating", rnd.nextDouble())
                     .put("tags", CommonTest.stringArray(rnd, 1,rnd.nextInt(5) + 1));
         if (rnd.nextInt(3) == 1)
         {

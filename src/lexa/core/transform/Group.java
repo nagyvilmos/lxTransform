@@ -13,8 +13,11 @@ package lexa.core.transform;
 import java.util.ArrayList;
 import java.util.List;
 import lexa.core.data.DataArray;
+import lexa.core.data.DataFactory;
 import lexa.core.data.DataItem;
 import lexa.core.data.DataSet;
+import lexa.core.data.DataType;
+import lexa.core.data.DataValue;
 
 /**
  * Grouping functions for a transform
@@ -24,7 +27,7 @@ import lexa.core.data.DataSet;
 public class Group
         extends TransformStep
 {
-    private final DataArray keys;           // fields to make up the key a_b_c
+    private final DataArray key;           // fields to make up the key a_b_c
     private final boolean strip;            // strip _n from end of key names;
     private final DataArray group;          // all grouping fields
     private final List<Grouping> groupings; // how the numbers should be grouped.
@@ -38,17 +41,16 @@ public class Group
     public Group(Transform parent, DataSet grouping)
     {
         super(parent);
-        this.keys= grouping.getArray("keys");
+        this.key= DataType.ARRAY.equals(grouping.getType("key")) ?
+                grouping.getArray("key") :
+                grouping.factory().getDataArray();
 
-
-        this.strip = grouping.contains("strip") ?
+        this.strip = DataType.BOOLEAN.equals(grouping.getType("strip")) ?
                 grouping.getBoolean("strip") : true;
 
-        this.group = this.keys == null ?
+        this.group = DataType.ARRAY.equals(grouping.getType("group")) ?
                 grouping.getArray("group") :
-                    super.factory().getDataArray().addAll(this.keys)
-                        .addAll(grouping.getArray("group"));
-
+                grouping.factory().getDataArray();
         this.groupings = Group.buildGroupings(
                 grouping.contains("grouping") ?
                     grouping.getDataSet("grouping") :
@@ -102,42 +104,51 @@ public class Group
         }
     }
 
-    private DataSet getGroup(DataItem next)
+    private DataSet getGroup(DataItem item)
     {
-        // based on the grouping
-
-        if (this.group == null)
-        {
-            // single summation
-            if (!this.results.contains("all"))
-            {
-                this.results.put("all", super.factory().getDataSet());
-                this.validatedItems++; // actually it's one/
-            }
-            return this.results.getDataSet("all");
-        }
-        return this.getGroup(next.getDataSet());
+        DataSet data = item.getDataSet();
+        return this.getGroupByKey(data);
     }
 
-    private DataSet getGroup(DataSet data)
+    private DataSet getGroupByKey(DataSet data)
     {
-        String key = this.getKeyFromData(data);
-        if (this.group == null)
+        // based on the GROUP names,
+        String id;
+        if (this.key.size() != 0)
         {
-            // single summation
-            if (!this.results.contains(key))
-            {
-                this.results.put(key, super.factory().getDataSet());
-                this.validatedItems++; // actually it's one/
-            }
-            return this.results.getDataSet(key);
+            throw new UnsupportedOperationException();
         }
-        throw new UnsupportedOperationException("Group.getGroup not supported yet.");
+        else
+        {
+            id = "all";
+        }
+        DataSet keyData = this.results.getDataSet(id);
+        if (keyData == null)
+        {
+            DataFactory factory = this.factory();
+            keyData = factory.getDataSet();
+            for (DataValue value : this.key)
+            {
+                String k = value.getString();
+                if (k != null)
+                {
+                    keyData.put(factory.getDataItem(k,
+                            factory.clone(data.getValue(k))
+                    ));
+                }
+            }
+            this.results.put(id, keyData);
+        }
+        return this.getGroupByGroup(keyData, data);
     }
 
-    private String getKeyFromData(DataSet data)
+    private DataSet getGroupByGroup(DataSet keyData, DataSet item)
     {
-        throw new UnsupportedOperationException("Group.getKeyFromData not supported yet.");
+        if (this.group.size() == 0)
+        {
+            return keyData;
+        }
+            throw new UnsupportedOperationException();
     }
 
     private static List<Grouping> buildCounts(DataSet countData)

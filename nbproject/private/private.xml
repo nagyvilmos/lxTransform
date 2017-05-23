@@ -3,13 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/william/Documents/source/lxTransform/src/lxtransform/SortTest.java</file>
-            <file>file:/C:/Users/william/Documents/source/lxTransform/src/lxtransform/MultipleTransformTest.java</file>
-            <file>file:/C:/Users/william/Documents/source/lxTransform/src/lxtransform/ContainsTest.java</file>
-            <file>file:/C:/Users/william/Documents/source/lxTransform/src/lxtransform/GroupTest.java</file>
-            <file>file:/C:/Users/william/Documents/source/lxTransform/src/lxtransform/CommonTest.java</file>
-            <file>file:/C:/Users/william/Documents/source/lxTransform/src/lxtransform/FlattenTest.java</file>
-            <file>file:/C:/Users/william/Documents/source/lxTransform/src/lxtransform/TruncateTest.java</file>
+            <file>file:/C:/Users/william/Documents/source/Lexa/lxTransform/src/lexa/core/transform/Group.java</file>
+            <file>file:/C:/Users/william/Documents/source/Lexa/lxTransform/src/lxtransform/GroupTest.java</file>
+            <file>file:/C:/Users/william/Documents/source/Lexa/lxTransform/src/lxtransform/CommonTest.java</file>
         </group>
     </open-files>
 </project-private>
