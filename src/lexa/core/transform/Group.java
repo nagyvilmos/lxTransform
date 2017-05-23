@@ -114,9 +114,15 @@ public class Group
     {
         // based on the GROUP names,
         String id;
-        if (this.key.size() != 0)
+        if (this.key.size() > 0)
         {
-            throw new UnsupportedOperationException();
+            id = data.getObject(this.key.get(0).getString()).toString();
+            // no append extra keys
+            for (int k = 1; k < this.key.size(); k++)
+            {
+                id = id + '_' +
+                        data.getObject(this.key.get(k).getString()).toString();
+            }
         }
         else
         {
@@ -130,12 +136,9 @@ public class Group
             for (DataValue value : this.key)
             {
                 String k = value.getString();
-                if (k != null)
-                {
-                    keyData.put(factory.getDataItem(k,
-                            factory.clone(data.getValue(k))
-                    ));
-                }
+                keyData.put(factory.getDataItem(k,
+                        factory.clone(data.getValue(k))
+                ));
             }
             this.results.put(id, keyData);
         }

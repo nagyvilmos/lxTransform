@@ -34,11 +34,12 @@ public class GroupTest
     public TestResult countAll(Object arg) throws IOException
     {
         Transform transform = new Transform(this.data).group();
+        DataSet ds = transform.getDataSet();
         return TestResult.all(
-                TestResult.result(1, transform.getDataSet().size()),
+                TestResult.notNull(ds),
+                TestResult.result(1, ds.size()),
                 TestResult.result(CommonTest.DATA_SIZE,
-                    transform
-                            .item(0).getDataSet()
+                    ds.getDataSet("all")
                             .getInteger("count"))
         );
     }
@@ -53,13 +54,12 @@ public class GroupTest
                         .add("sex")));
         DataSet ds = transform.getDataSet();
         return TestResult.all(
+                TestResult.notNull(ds),
                 TestResult.result(2, ds.size()),
-                TestResult.result(50,
-                    ds.get(0).getDataSet().getInteger("count")),
-                TestResult.result(50,
-                    transform
-                            .item(1).getDataSet()
-                            .getInteger("count"))
+                TestResult.result(47,
+                    ds.getDataSet("m").getInteger("count")),
+                TestResult.result(53,
+                    ds.getDataSet("f").getInteger("count"))
         );
     }
 
@@ -72,11 +72,12 @@ public class GroupTest
                         .put("count",
                             new ArrayDataSet()
                                 .put("count", "optional"))));
+        DataSet ds = transform.getDataSet();
         return TestResult.all(
-                TestResult.result(1, transform.getDataSet().size()),
+                TestResult.notNull(ds),
+                TestResult.result(1, ds.size()),
                 TestResult.result(28,
-                    transform
-                            .item(0).getDataSet()
+                    ds.getDataSet("all")
                             .getInteger("count"))
         );    }
     @TestAnnotation()
@@ -88,11 +89,12 @@ public class GroupTest
                         .put("sum",
                             new ArrayDataSet()
                                 .put("total ages", "age"))));
+        DataSet ds = transform.getDataSet();
         return TestResult.all(
-                TestResult.result(1, transform.getDataSet().size()),
+                TestResult.notNull(ds),
+                TestResult.result(1, ds.size()),
                 TestResult.result(3402,
-                    transform
-                            .item(0).getDataSet()
+                    ds.getDataSet("all")
                             .getInteger("total ages"))
         );
     }
@@ -105,11 +107,12 @@ public class GroupTest
                         .put("sum",
                             new ArrayDataSet()
                                 .put("total rating", "rating"))));
+        DataSet ds = transform.getDataSet();
         return TestResult.all(
-                TestResult.result(1, transform.getDataSet().size()),
-                TestResult.result(48.398145,48.398146,
-                    transform
-                            .item(0).getDataSet()
+                TestResult.notNull(ds),
+                TestResult.result(1, ds.size()),
+                TestResult.result(48.3981456,48.3981457,
+                    ds.getDataSet("all")
                             .getDouble("total rating"))
         );
     }
