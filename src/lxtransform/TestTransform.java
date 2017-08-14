@@ -33,6 +33,7 @@ public class TestTransform
             new ContainsTest(),
             new FlattenTest(),
             new GroupTest(),
+            new MapTest(),
             new SortTest(),
             new TruncateTest(),
             new MultipleTransformTest()

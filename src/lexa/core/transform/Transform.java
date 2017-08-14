@@ -17,6 +17,7 @@ import lexa.core.data.DataFactory;
 import lexa.core.data.DataFactoryItem;
 import lexa.core.data.DataItem;
 import lexa.core.data.DataSet;
+import lexa.core.expression.map.*;
 
 /**
  *
@@ -99,14 +100,20 @@ public class Transform
                 grouping != null ? grouping :
                         this.factory().getDataSet());
     }
+    public Transform map(ExpressionMap map)
+    {
+        return new Map(this, map);
+    }
     public Transform sort(String field, boolean ascending)
     {
         return new Sort(this, field, ascending);
     }
+
     public Transform sort(String[] field, boolean[] ascending)
     {
         return new Sort(this, field, ascending);
     }
+
     public Transform truncate(int requiredSize)
     {
         return new Truncate(this, requiredSize);
