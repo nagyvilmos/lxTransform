@@ -30,6 +30,14 @@ public class Map
         this.map = map;
         this.transformed = parent.factory().getDataSet();
     }
+
+    @Override
+    public DataSet getDataSet()
+    {
+        this.processTo(this.previous.size());
+        return this.transformed;
+    }
+
     @Override
     public DataItem item(int index)
     {
@@ -63,7 +71,8 @@ public class Map
                 break;
             }
             DataSet ds = di.getDataSet();
-            this.transformed = new MapDataSet(this.map, ds);
+            this.transformed.put(di.getKey(),
+                    new MapDataSet(this.map, ds).evaluate());
             this.validatedItems++;
         }
         return this.transformed.size();

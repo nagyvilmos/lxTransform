@@ -38,13 +38,13 @@ public class MapTest
     {
         ExpressionMap map = new ExpressionMap(
                 DataReader.parseString(
-                        "fullname - [format \"$1 $2\" forename name]"
+                        "fullname - [format \"%s %s\" forename name]"
                 )
         );
         Transform transform = new Transform(this.data).map(map);
         DataSet result = transform.getDataSet();
 
-        boolean validNames = true;
+        int invalidNames = 0;
         for (DataItem di : result)
         {
             DataSet ds = this.data.getDataSet(di.getKey());
@@ -53,13 +53,12 @@ public class MapTest
             DataSet res = di.getDataSet();
             if (!fullname.equals(res.getString("fullname")))
             {
-                validNames = false;
-                break;
+                invalidNames++;
             }
         }
         return TestResult.all(
                 TestResult.result(this.data.size(), result.size()),
-                TestResult.result(validNames)
+                TestResult.result(0, invalidNames, Integer.toString(invalidNames) + " invalid name[s]")
         );
     }
 }
