@@ -7,7 +7,6 @@
  * Created: August 2017
  *==============================================================================
  */
-
 package lexa.core.transform;
 
 import lexa.core.data.*;
