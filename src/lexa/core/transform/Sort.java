@@ -10,11 +10,7 @@
  */
 package lexa.core.transform;
 
-import lexa.core.data.ArrayFactory;
-import lexa.core.data.DataFactory;
-import lexa.core.data.DataItem;
-import lexa.core.data.DataSet;
-import lexa.core.data.DataValue;
+import lexa.core.data.*;
 
 /**
  *
@@ -46,11 +42,10 @@ class Sort
     @Override
     public DataItem item(int index)
     {
-        if (index < 0 || index >= this.size())
+        if (index < 0 || index >= this.processTo(index))
         {
             return null;
         }
-        this.processTo(index);
         return this.previous.item(this.sorted[index]);
     }
 
@@ -66,19 +61,6 @@ class Sort
     {
         return ArrayFactory.factory;
     }
-    @Override
-    public DataSet getDataSet()
-    {
-        if (this.results == null)
-        {
-            this.results = this.factory().getDataSet();
-            for (int i = 0; i < this.size(); i++)
-            {
-                this.results.put(this.item(i));
-            }
-        }
-        return this.results;
-    }
 
     @Override
     int processTo(int item)
@@ -91,41 +73,57 @@ class Sort
         this.sorted = new int[size];
         if (size>0)
         {
-            this.splitSort(0, size);
+            // initisalise the index
+            for (int i = 0; i < size; i++)
+            {
+                this.sorted[i] = i;
+            }
+            this.quickSort(0, size);
         }
         this.validatedItems=this.size();
         return this.validatedItems;
     }
-    private void splitSort(int min, int max)
+
+    private void quickSort(int min, int max)
     {
-        if (min +1 == max)
+        if (min < max - 1)
         {
-            this.sorted[min]=min;
-            return;
-        }
-        int mid = (min + max) / 2;
-        assert(mid!=min && mid!=max);
-        this.splitSort(min, mid);
-        this.splitSort(mid, max);
-
-
-        int left = min;
-        int right = mid;
-        while (left < mid && right < max)
-        {
-            if (compare(left, right) <= 0)
+            int pivot = this.partition(min, max);
+            if (pivot == max)
             {
-                left++;
+                pivot--;
+            }
+            this.quickSort(min, pivot);
+            this.quickSort(pivot, max);
+        }
+    }
+
+
+    private int partition(int min, int max)
+    {
+        int pivot = max - 1;
+        int split = max;
+        int index = min;
+        while (index < split)
+        {
+            if (compare(index, pivot) <= 0)
+            {
+                // leave it where it is
+                index++;
             }
             else
             {
-                // swap
-                int temp = this.sorted[left];
-                this.sorted[left] = this.sorted[right];
-                this.sorted[right]=temp;
-                right++;
+                split--;
+                if (pivot == split)
+                {
+                    pivot = index;
+                }
+                int swap = this.sorted[split];
+                this.sorted[split] = this.sorted[index];
+                this.sorted[index] = swap;
             }
         }
+        return split;
     }
 
     private int compare(int from, int to)
@@ -139,7 +137,6 @@ class Sort
                     toValue == null ? 0 : 1 :
                     toValue == null ? -1 :
                     fromValue.compareTo(toValue);
-
             if (compare !=0)
             {
                 return this.ascending[f] ?

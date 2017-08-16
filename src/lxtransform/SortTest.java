@@ -11,6 +11,7 @@
 package lxtransform;
 
 import java.io.IOException;
+import lexa.core.data.*;
 import lexa.core.transform.Transform;
 import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
@@ -30,8 +31,23 @@ public class SortTest
     public TestResult sort(Object arg) throws IOException
     {
         Transform transform = new Transform(this.data).sort("rating", true);
-        return TestResult.result(CommonTest.DATA_SIZE,
-                transform.getDataSet().size());
+        DataSet result = transform.getDataSet();
+        Double previous = 0.0;
+        boolean ordered = true;
+        for (DataItem item : result)
+        {
+            Double next = item.getDataSet().getDouble("rating");
+            if (next < previous)
+            {
+                ordered = false;
+                break;
+            }
+            previous = next;
+        }
+        return TestResult.all(
+                TestResult.result(CommonTest.DATA_SIZE, result.size()),
+                TestResult.result(true, ordered, "Data not sorted")
+        );
     }
 
     @TestAnnotation()

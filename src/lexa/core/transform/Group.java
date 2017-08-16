@@ -62,19 +62,9 @@ public class Group
     }
 
     @Override
-    public DataItem item(int index)
-    {
-        if (index < 0 || index >= this.processTo(index))
-        {
-            return null;
-        }
-        return this.results.get(index);
-    }
-
-    @Override
     int processTo(int item)
     {
-        if (this.results != null)
+        if (item <= this.validatedItems)
         {
             return this.validatedItems;
         }
@@ -87,13 +77,14 @@ public class Group
             this.applyGroupings(groupData, next.getDataSet());
             this.nextRead++;
         }
+        this.validatedItems = this.results.size();
         return this.validatedItems;
     }
     @Override
     public int size()
     {
         this.processTo(Integer.MAX_VALUE);
-        return this.results.size();
+        return this.validatedItems;
     }
 
     private void applyGroupings(DataSet groupData, DataSet data)

@@ -21,38 +21,19 @@ public class Map
         extends TransformStep
 {
     private final ExpressionMap map;
-    private DataSet transformed;
 
     public Map(Transform parent, ExpressionMap map)
     {
         super(parent);
         this.map = map;
-        this.transformed = parent.factory().getDataSet();
-    }
-
-    @Override
-    public DataSet getDataSet()
-    {
-        this.processTo(this.previous.size());
-        return this.transformed;
-    }
-
-    @Override
-    public DataItem item(int index)
-    {
-        this.processTo(index);
-        if (index < 0 || index >= this.transformed.size())
-        {
-            return null;
-        }
-        return this.transformed.get(index);
+        this.results = parent.factory().getDataSet();
     }
 
     @Override
     public int size()
     {
         this.processTo(this.previous.size());
-        return this.transformed.size();
+        return this.results.size();
     }
 
     @Override
@@ -60,9 +41,9 @@ public class Map
     {
         if (this.validatedItems == 0)
         {
-            this.transformed = this.previous.factory().getDataSet();
+            this.results = this.previous.factory().getDataSet();
         }
-        while(item > this.transformed.size())
+        while(item > this.results.size())
         {
             DataItem di = this.previous.item(this.validatedItems);
             if (di == null)
@@ -70,10 +51,10 @@ public class Map
                 break;
             }
             DataSet ds = di.getDataSet();
-            this.transformed.put(di.getKey(),
+            this.results.put(di.getKey(),
                     new MapDataSet(this.map, ds).evaluate());
             this.validatedItems++;
         }
-        return this.transformed.size();
+        return this.results.size();
     }
 }

@@ -10,8 +10,7 @@
  */
 package lexa.core.transform;
 
-import lexa.core.data.DataSet;
-import lexa.core.data.DataFactory;
+import lexa.core.data.*;
 
 /**
  * A step in a data set transformation
@@ -36,31 +35,32 @@ public abstract class TransformStep
     }
 
     @Override
-    public DataSet getDataSet()
+    public DataItem item(int index)
     {
-        if (this.size() == this.previous.size())
+        if (index < 0 || index >= this.processTo(index))
         {
-            // take the previous as it is unchanged
-            return this.previous.getDataSet();
+            return null;
         }
-        if (this.results == null)
-        {
-            this.results = this.factory().getDataSet();
-            for (int i = 0; i < this.size(); i++)
-            {
-                this.results.put(this.item(i));
-            }
-        }
-        return this.results;
+        return this.results.get(index);
     }
 
     @Override
-    int processTo(int item)
+    public DataSet getDataSet()
     {
-        this.results=null;
-        return super.processTo(item);
+        int size  = this.processTo(this.previous.size());
+        if (this.results != null)
+        {
+            return this.results;
+        }
+        this.results = this.factory().getDataSet();
+        for (int index = 0;
+             index < size;
+             index++)
+        {
+            this.results.put(this.item(index));
+        }
+        return this.results;
     }
-
 
     TransformStep(Transform previous)
     {

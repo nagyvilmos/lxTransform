@@ -33,21 +33,18 @@ public class Flatten
     }
 
     @Override
-    public DataItem item(int index)
+    public DataSet getDataSet()
     {
-        this.processTo(index);
-        if (index < 0 || index >= this.results.size())
-        {
-            return null;
-        }
-        return this.results.get(index);
+        this.processTo(Integer.MAX_VALUE);
+        return super.getDataSet();
     }
+
     @Override
     int processTo(int item)
     {
         if (this.results == null)
         {
-            this.results=this.previous.getDataSet().factory().getDataSet();
+            this.results=this.factory().getDataSet();
         }
         while (this.validatedItems < item &&
                 this.nextRead < this.previous.size() )

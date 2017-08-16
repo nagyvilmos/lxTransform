@@ -39,8 +39,7 @@ public class Contains
     @Override
     public DataItem item(int index)
     {
-        this.processTo(index);
-        if (index < 0 || index >= this.matches.size())
+        if (index < 0 || index >= this.processTo(index))
         {
             return null;
         }

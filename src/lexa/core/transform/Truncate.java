@@ -10,7 +10,7 @@
  */
 package lexa.core.transform;
 
-import lexa.core.data.DataItem;
+import lexa.core.data.*;
 
 /**
  *
@@ -33,12 +33,21 @@ public class Truncate
     @Override
     public DataItem item(int index)
     {
-        this.processTo(index);
-        if (index < 0 || index >= this.validatedItems)
+        if (index < 0 || index >= this.processTo(index))
         {
             return null;
         }
         return this.previous.item(start+index);
+    }
+
+    @Override
+    public DataSet getDataSet()
+    {
+        if (this.previous.size() == this.size())
+        {
+            return this.previous.getDataSet();
+        }
+        return super.getDataSet();
     }
 
     @Override
