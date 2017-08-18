@@ -21,7 +21,7 @@ public abstract class TransformStep
     extends Transform
 {
 
-    // any search step can see it's previous values
+    /** The previous step in the transformation */
     protected final Transform previous;
 
     @Override

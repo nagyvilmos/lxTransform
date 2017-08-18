@@ -16,10 +16,11 @@ import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
 
 /**
+ * Test multiple transformations
  *
- * @author william
+ * @author  william
+ * @since   2017-05
  */
-
 @TestAnnotation(
         arguments = "dataSetTypes",
         setUp = "setUpClass",
@@ -27,6 +28,15 @@ import lexa.test.TestResult;
 public class MultipleTransformTest
         extends CommonTest {
 
+    /**
+     * Test multiple transformations
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult multiple(Object arg) throws IOException
     {

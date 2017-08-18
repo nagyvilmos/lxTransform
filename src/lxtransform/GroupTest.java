@@ -19,9 +19,10 @@ import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
 
 /**
- * Test grouping functions
- * @author william
- * @since 2017-05
+ * Test group transformation
+ *
+ * @author  william
+ * @since   2017-05
  */
 @TestAnnotation(
         arguments = "dataSetTypes",
@@ -30,6 +31,15 @@ import lexa.test.TestResult;
 public class GroupTest
         extends CommonTest
 {
+    /**
+     * Test the group all for a count transform
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult countAll(Object arg) throws IOException
     {
@@ -44,6 +54,15 @@ public class GroupTest
         );
     }
 
+    /**
+     * Test the group for a count by key transform
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult countGender(Object arg) throws IOException
     {
@@ -63,6 +82,15 @@ public class GroupTest
         );
     }
 
+    /**
+     * Test the group for a count by an optional field transform
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult countOptional(Object arg) throws IOException
     {
@@ -80,6 +108,16 @@ public class GroupTest
                     ds.getDataSet("all")
                             .getInteger("count"))
         );    }
+
+    /**
+     * Test the group for a sum of integers transform
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult sumInteger(Object arg) throws IOException
     {
@@ -98,6 +136,15 @@ public class GroupTest
                             .getInteger("total ages"))
         );
     }
+    /**
+     * Test the group for a sum of doubles transform
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult sumDouble(Object arg) throws IOException
     {

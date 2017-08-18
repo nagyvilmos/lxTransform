@@ -17,8 +17,10 @@ import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
 
 /**
+ * Test sort transformations
  *
- * @author william
+ * @author  william
+ * @since   2017-05
  */
 @TestAnnotation(
         arguments = "dataSetTypes",
@@ -27,6 +29,15 @@ import lexa.test.TestResult;
 public class SortTest
         extends CommonTest {
 
+    /**
+     * Test sort transformation
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult sort(Object arg) throws IOException
     {
@@ -50,6 +61,15 @@ public class SortTest
         );
     }
 
+    /**
+     * Test sort transformation with an optional field
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult sortOptional(Object arg) throws IOException
     {
@@ -62,6 +82,15 @@ public class SortTest
                 transform.getDataSet().size());
     }
 
+    /**
+     * Test sort transformation with ascending and descending keys
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult sortNameAgeDesc(Object arg) throws IOException
     {
@@ -74,6 +103,15 @@ public class SortTest
                 transform.getDataSet().size());
     }
 
+    /**
+     * Test sort transformation multiple times with different inputs
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult multiSort(Object arg) throws IOException
     {

@@ -17,8 +17,9 @@ import lexa.test.TestAnnotation;
 import lexa.test.TestResult;
 
 /**
- *
- * @author william
+ * Test flatten transforms
+ * @author  william
+ * @since   2017-05
  */
 
 @TestAnnotation(
@@ -28,7 +29,16 @@ import lexa.test.TestResult;
 public class FlattenTest
         extends CommonTest
 {
+    /** expected size of flattening */
     private final static int FLATTEND_SIZE = 260;
+
+    /**
+     * Test the flatten transform
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     */
     @TestAnnotation()
     public TestResult simple(Object arg)
     {
@@ -51,6 +61,14 @@ public class FlattenTest
         DataSet result = transform.getDataSet();
         return TestResult.result(expected, result);
     }
+
+    /**
+     * Test the flatten transform for the full test data
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     */
     @TestAnnotation()
     public TestResult flatten(Object arg)
     {
@@ -58,6 +76,14 @@ public class FlattenTest
         return TestResult.result(FlattenTest.FLATTEND_SIZE, transform.getDataSet().size());
     }
 
+    /**
+     * Test the flatten transform where the field is not an array
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs     */
     @TestAnnotation()
     public TestResult flattenNonArray(Object arg) throws IOException
     {
@@ -65,6 +91,14 @@ public class FlattenTest
         return TestResult.result(CommonTest.DATA_SIZE, transform.getDataSet().size());
     }
 
+    /**
+     * Test the flatten transform where the field does not exist
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  IOException
+     *          when an IO exception occurs     */
     @TestAnnotation()
     public TestResult flattenNoField(Object arg) throws IOException
     {

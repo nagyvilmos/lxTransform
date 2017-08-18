@@ -16,7 +16,12 @@ import lexa.core.data.DataSet;
 import lexa.core.data.DataValue;
 
 /**
+ * Create a transformation to flatten contents
+ * <p>
+ * Based on a keyed field, this creates a duplicate item for each entry in the
+ * named array value.
  *
+ * @since 2017-05
  * @author william
  */
 public class Flatten
@@ -25,6 +30,14 @@ public class Flatten
     private final String field;
     private int nextRead;
 
+    /**
+     * Create a transformation to flatten contents
+     *
+     * @param   parent
+     *          the parent to the transformation
+     * @param   field
+     *          the field to be flattened
+     */
     public Flatten(Transform parent, String field)
     {
         super(parent);

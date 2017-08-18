@@ -13,6 +13,7 @@ import lexa.core.data.*;
 import lexa.core.expression.map.*;
 
 /**
+ * A transform that applies an {@link ExpressionMap} to the input.
  *
  * @author  willaimnw
  * @since   2017-08
@@ -20,8 +21,17 @@ import lexa.core.expression.map.*;
 public class Map
         extends TransformStep
 {
+    /** the expression map to apply to the data */
     private final ExpressionMap map;
 
+    /**
+     * Create a group transform
+     *
+     * @param   parent
+     *          the parent to the transformation
+     * @param   map
+     *          the {@link ExpressionMap} to apply.
+     */
     public Map(Transform parent, ExpressionMap map)
     {
         super(parent);

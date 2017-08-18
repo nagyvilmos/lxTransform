@@ -21,23 +21,69 @@ import lexa.core.data.DataValue;
 
 /**
  * Grouping functions for a transform
+ * <p>
+ * Without any parameters, the grouping operation simply counts all the entries
+ * resulting in a data set of contents:
+ * <pre>
+ * count % &lt;number of items&gt;
+ * </pre>
+ * <p>
+ * Given group data, as a data set, the data is grouped by a key and outputs
+ * calculated.
+ * Grouping data is in the format:
+ * <pre>
+ * key [
+ *   &lt;field name&gt;
+ *   ...
+ * ]
+ * strip ? &lt;flag to strip trailing _n from key names&gt;
+ * group [
+ *   &lt;field name&gt;
+ *   ...
+ * ]
+ * grouping {
+ *   &lt;group&gt; {
+ *     &lt;action&gt; - &lt;field&gt;
+ *   }
+ * }
+ * </pre>
+ *
  * @author william
  * @since 2017-05
  */
 public class Group
         extends TransformStep
 {
-    private final DataArray key;           // fields to make up the key a_b_c
-    private final boolean strip;            // strip _n from end of key names;
-    private final DataArray group;          // all grouping fields
-    private final List<Grouping> groupings; // how the numbers should be grouped.
+    /** fields to make up the key a_b_c */
+    private final DataArray key;
+    /** strip _n from end of key names; */
+    private final boolean strip;
+    /** all grouping fields */
+    private final DataArray group;
+    /** how the numbers should be grouped. */
+    private final List<Grouping> groupings;
+    /** next input to read */
     private int nextRead;
 
+    /**
+     * Create a group transform to count the entries.
+     *
+     * @param   parent
+     *          the parent to the transformation
+     */
     public Group(Transform parent)
     {
         this(parent, parent.factory().getDataSet());
     }
 
+    /**
+     * Create a group transform
+     *
+     * @param   parent
+     *          the parent to the transformation
+     * @param   grouping
+     *          grouping parameters; see {@link Group}
+     */
     public Group(Transform parent, DataSet grouping)
     {
         super(parent);
@@ -80,6 +126,7 @@ public class Group
         this.validatedItems = this.results.size();
         return this.validatedItems;
     }
+
     @Override
     public int size()
     {
@@ -142,7 +189,7 @@ public class Group
         {
             return keyData;
         }
-            throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     private static List<Grouping> buildCounts(DataSet countData)
@@ -254,25 +301,6 @@ public class Group
         void group(DataSet total, DataSet item);
     }
 
-//    private static class SumAll
-//            implements Grouping
-//    {
-//        private final String key;
-//
-//        public SumAll(String key)
-//        {
-//            this.key = key;
-//        }
-//
-//        @Override
-//        public void group(DataSet total, DataSet item)
-//        {
-//            DataItem di = item.get(key);
-//            switch (di.getType())
-//
-//        }
-//    }
-
     private static class Sum
             implements Grouping
     {
@@ -288,7 +316,6 @@ public class Group
         @Override
         public void group(DataSet total, DataSet item)
         {
-
             if (item.contains(this.field))
             {
                 DataItem addItem = item.get(this.field);
@@ -323,4 +350,5 @@ public class Group
                 }
             }
         }
-    }}
+    }
+}

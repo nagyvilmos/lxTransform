@@ -13,20 +13,46 @@ package lexa.core.transform;
 import lexa.core.data.*;
 
 /**
+ * A transform that sorts the input.
  *
- * @author william
+ * @author  william
+ * @since   2017-05
  */
 class Sort
         extends TransformStep {
 
+    /** the fields to sort by */
     private final String[] fields;
+    /** indicates if the field is ascending or descending order */
     private final boolean[] ascending;
+    /** the indexes of the sorted items */
     private int[] sorted;
 
+    /**
+     * Create a sort transform
+     *
+     * @param   parent
+     *          the parent to the transformation
+     * @param   field
+     *          the field to sort on
+     * @param   ascending
+     *          is the order ascending
+     */
     public Sort(Transform parent, String field, boolean ascending)
     {
         this(parent, new String[]{field}, new boolean[]{ascending});
     }
+
+    /**
+     * Create a sort transform
+     *
+     * @param   parent
+     *          the parent to the transformation
+     * @param   field
+     *          array of fields to sort on
+     * @param   ascending
+     *          are the orders ascending
+     */
     public Sort(Transform parent, String[] fields, boolean[] ascending)
     {
         super(parent);

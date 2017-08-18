@@ -17,8 +17,9 @@ import lexa.core.data.DataSet;
 import lexa.core.data.DataValue;
 
 /**
- *
+ * Extract items from a data set.
  * @author william
+ * @since 2017-05
  */
 public class Contains
         extends TransformStep
@@ -28,6 +29,15 @@ public class Contains
     private final DataValue value;
     private final List<Integer> matches;
 
+    /**
+     * Extract the items containing a matching key/value
+     * @param   parent
+     *          the parent to the transformation
+     * @param   key
+     *          the key to be matched
+     * @param   value
+     *          the value required for the key
+     */
     public Contains(Transform parent, String key, Object value)
     {
         super(parent);

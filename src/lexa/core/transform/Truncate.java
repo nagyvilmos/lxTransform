@@ -13,19 +13,32 @@ package lexa.core.transform;
 import lexa.core.data.*;
 
 /**
+ * A transform that truncates the input.
  *
- * @author william
+ * @author  william
+ * @since   2017-05
  */
 public class Truncate
         extends TransformStep {
 
+    /** indicates if the truncation is the top or bottom of the items */
     private final boolean readTop;
+    /** the size to truncate to */
     private final int requiredSize;
+    /** the starting point */
     private int start;
     private int end;
-    public Truncate(Transform previous, int requiredSize)
+
+    /**
+     * Create a transform to truncate the data.
+     * @param   parent
+     *          the parent to the transformation
+     * @param   requiredSize
+     *          the size to truncate to; negative is tail.
+     */
+    public Truncate(Transform parent, int requiredSize)
     {
-        super(previous);
+        super(parent);
         this.readTop = requiredSize > 0;
         this.requiredSize = this.readTop ? requiredSize : -requiredSize;
     }

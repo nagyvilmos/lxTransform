@@ -18,6 +18,7 @@ import lexa.core.transform.*;
 import lexa.test.*;
 
 /**
+ * Test map transformation
  *
  * @author  willaimnw
  * @since   2017-08
@@ -30,6 +31,17 @@ public class MapTest
         extends CommonTest
 {
 
+    /**
+     * Test the map transform
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the test
+     * @throws  ExpressionException
+     *          when an expression exception occurs
+     * @throws  IOException
+     *          when an IO exception occurs
+     */
     @TestAnnotation()
     public TestResult simple(Object arg)
         throws ExpressionException,

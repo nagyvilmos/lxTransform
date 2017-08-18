@@ -26,13 +26,23 @@ import lexa.test.TestResult;
 public class CommonTest
         extends lexa.test.TestClass
 {
+    /** number of items required for test data */
     protected final static int DATA_SIZE = 100;
+    /** the test data */
     protected DataSet data;
 
-    private static DataSet populateItem(int x, Random rnd)
+    /**
+     * Populate an item with random test data
+     * @param   id
+     *          an id for the item
+     * @param   rnd
+     *          random number generator
+     * @return  an item of test data
+     */
+    private static DataSet populateItem(int id, Random rnd)
     {
         DataSet data = new ArrayDataSet()
-                    .put("id", x)
+                    .put("id", id)
                     .put("name", CommonTest.string(rnd, 3))
                     .put("forename", CommonTest.string(rnd, 2))
                     .put("age", rnd.nextInt(30) + 21)
@@ -46,7 +56,16 @@ public class CommonTest
         return data;
     }
 
-   private static String string(Random rnd, int length)
+    /**
+     * Create a random string
+     *
+     * @param   rnd
+     *          random number generator
+     * @param   length
+     *          required length
+     * @return  a random string
+     */
+    private static String string(Random rnd, int length)
     {
         char[] letters = {'a','b','c','d','e','f','g','k','l','m'};
         int mod = letters.length;
@@ -59,6 +78,18 @@ public class CommonTest
         }
         return new String (output);
     }
+
+    /**
+     * Create an array of random strings
+     *
+     * @param   rnd
+     *          random number generator
+     * @param   length
+     *          required length
+     * @param   items
+     *          required size
+     * @return  an array of random strings
+     */
     private static DataArray stringArray(Random rnd, int length, int items)
     {
         DataArray array = new ArrayDataArray();
@@ -69,6 +100,12 @@ public class CommonTest
         return array;
     }
 
+    /**
+     * Populate a data set with random items
+     * @param   data
+     *          the data set to be populated
+     * @return  the result of populating the data set
+     */
     static TestResult populate(DataSet data)
     {
         Random rnd = new Random(715913);
@@ -80,8 +117,9 @@ public class CommonTest
         return TestResult.result(CommonTest.DATA_SIZE, data.size());
     }
     /**
+     * get a list of input data sets to use.
      *
-     * @return
+     * @return  a list of input data sets to use.
      */
     public Object[] dataSetTypes()
     {
@@ -89,9 +127,10 @@ public class CommonTest
     }
 
     /**
-     *
-     * @param arg
-     * @return
+     * Set up the class for testing
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the set up
      */
     public TestResult setUpClass(Object arg)
     {
@@ -116,6 +155,13 @@ public class CommonTest
         return CommonTest.populate(this.data);
     }
 
+    /**
+     * Tear down the test data for the class
+     *
+     * @param   arg
+     *          the type of data set being tested
+     * @return  the result of the tear down
+     */
     public TestResult tearDownClass(Object arg)
     {
         this.data = null;
